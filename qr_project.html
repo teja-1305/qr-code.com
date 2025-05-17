@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Code with Logo</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+</head>
+<body>
+
+<h2>Enter text or URL to generate QR Code with Logo:</h2>
+<input type="text" id="text-input" placeholder="Enter text or URL">
+<button onclick="generateQRCode()">Generate QR Code</button>
+<br><br>
+
+<canvas id="qrcode-canvas" width="300" height="300"></canvas>
+
+<script>
+function generateQRCode() {
+    const data = document.getElementById("text-input").value;
+    const canvas = document.getElementById("qrcode-canvas");
+
+    // Clear previous QR
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Generate QR code
+    QRCode.toCanvas(canvas, data, { width: 300 }, function (error) {
+        if (error) {
+            console.error(error);
+            return;
+        }
+
+        console.log("QR code generated!");
+
+        // Load logo image
+        const logo = new Image();
+        logo.src = "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"; // Replace with your own logo URL
+
+        logo.onload = function () {
+            const logoSize = 60; // Adjust size as needed
+            const x = (canvas.width / 2) - (logoSize / 2);
+            const y = (canvas.height / 2) - (logoSize / 2);
+
+            ctx.drawImage(logo, x, y, logoSize, logoSize);
+        };
+    });
+}
+</script>
+
+</body>
+</html>
